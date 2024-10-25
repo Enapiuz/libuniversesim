@@ -1,14 +1,12 @@
 # Define build directory and executable name
-BUILD_DIR = build
+BUILD_DIR = cmake-build-debug
 EXECUTABLE = libuniversesim
 CMAKE_GENERATOR = Ninja
 CMAKE_BUILD_TYPE = Debug
 
 # Default target: Build the executable
 .PHONY: all
-all:
-	mkdir -p $(BUILD_DIR)
-	cd $(BUILD_DIR) && cmake -G $(CMAKE_GENERATOR) -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) .. && cmake --build . --verbose
+all: build-shared
 
 # Run target: Build and then run the executable
 .PHONY: run
@@ -20,9 +18,15 @@ run: all
 clean:
 	rm -rf $(BUILD_DIR)
 
-# Convenience target for building only
-.PHONY: build
-build: all
+.PHONY: build-shared
+build-shared:
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR) && cmake -G $(CMAKE_GENERATOR) -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) .. && cmake --build . --verbose
+
+.PHONY: build-static
+build-static:
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR) && cmake -G $(CMAKE_GENERATOR) -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) .. && cmake --build . --verbose
 
 .PHONY: format
 format:
@@ -30,7 +34,7 @@ format:
 
 .PHONY: watch
 watch:
-	rg --files --glob "*.c" --glob "*.h"  | entr make build
+	rg --files --glob "*.c" --glob "*.h"  | entr make build-shared
 
 .PHONY: debug
 debug: all
