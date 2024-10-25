@@ -6,4 +6,4 @@ typedef struct planet {
   int id;
 } planet;
 
-planet *plaget_create(int id);
+planet *planet_create(int id);
