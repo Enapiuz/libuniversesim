@@ -16,6 +16,21 @@ And MAYBE, just maybe, it will be useful for someone else building their game ab
 ## Installation
 Nothing so fat until I minimally test it.
 
+## Workflow
+```C
+uns_init();
+const unsId sim = uns_create_simulation();
+
+// configure the simulation here
+
+while (!should_stop) {
+  uns_step_simulation();
+}
+
+uns_destroy_all_simulations();
+uns_shutdown();
+```
+
 ## License
 MIT
 

@@ -1,5 +1,4 @@
-#ifndef PLANET_H
-#define PLANET_H
+#pragma once
 
 #include "universesim/universesim.h"
 
@@ -7,6 +6,4 @@ typedef struct planet {
   int id;
 } planet;
 
-UNISIM_API planet *planet_create(int id);
-
-#endif // PLANET_H
+planet *plaget_create(int id);

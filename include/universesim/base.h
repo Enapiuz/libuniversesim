@@ -1,3 +1,5 @@
+#pragma once
+
 // clang-format off
 // 
 // Shared library macros
