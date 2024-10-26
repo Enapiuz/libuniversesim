@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "log.h"
 #include "universesim/universesim.h"
 
 static bool is_initialized = false;
@@ -24,8 +25,7 @@ UNISIM_API UNISIM_STATUS uns_System_Init(const char *logicPath, const char *dbPa
     return UNISIM_ERROR;
   }
 
-  // TODO: change to proper logger
-  puts("Initializing UniverseSim");
+  LOG(LOG_INFO, "Initializing UniverseSim");
 
   const UNISIM_STATUS res = sim_Container_Create(&container);
   if (res != UNISIM_OK) {
@@ -38,7 +38,7 @@ UNISIM_API UNISIM_STATUS uns_System_Init(const char *logicPath, const char *dbPa
 }
 
 UNISIM_API void uns_System_Shutdown(void) {
-  puts("Destroying UniverseSim");
+  LOG(LOG_INFO, "Destroying UniverseSim");
 
   // TODO: add proper cleaning of container, ie go over all simulations and lear them.
 
