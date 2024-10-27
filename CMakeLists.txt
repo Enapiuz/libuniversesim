@@ -62,6 +62,7 @@ if (BUILD_TESTS)
             GIT_REPOSITORY https://github.com/ThrowTheSwitch/Unity.git
             GIT_TAG v2.6.0
     )
+    set(UNITY_STATIC ON)
     FetchContent_MakeAvailable(unity)
 
     # Add test executable

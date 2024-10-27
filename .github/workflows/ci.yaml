@@ -29,5 +29,5 @@ jobs:
       - name: Configure
         run: cmake -B build ${{matrix.platform.flags}} ${{matrix.config.flags}} -DBUILD_TESTS=ON
 
-      - name: Build
+      - name: Build and Test
         run: cmake --build build --config Release --verbose --target tests
