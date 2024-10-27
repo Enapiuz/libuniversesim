@@ -23,17 +23,16 @@ Nothing so fat until I minimally test it.
 ## Workflow
 
 ```C++
-uns_init();
-const unsId sim = uns_create_simulation();
-
-// configure the simulation here
+uns_System_Init();
+unsId simulationId;
+uns_Simulation_Create("path/to/lua/code", "path/to/database", &simulationId);
 
 while (!should_stop) {
-  uns_step_simulation();
+  uns_Simulation_Step(simulationId);
 }
 
-uns_destroy_all_simulations();
-uns_shutdown();
+uns_Simulation_Destroy(simulationId);
+uns_System_Shutdown();
 ```
 
 ## License

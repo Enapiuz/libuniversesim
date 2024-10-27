@@ -10,19 +10,9 @@
 static bool is_initialized = false;
 static sim_Container *container = NULL;
 
-UNISIM_API UNISIM_STATUS uns_System_Init(const char *logicPath, const char *dbPath) {
+UNISIM_API UNISIM_STATUS uns_System_Init(void) {
   if (is_initialized == true) {
     return UNISIM_ERROR_NOT_INITIALIZED;
-  }
-
-  if (logicPath == NULL) {
-    // TODO: return proper error.
-    return UNISIM_ERROR_WRONG_PARAM;
-  }
-
-  if (dbPath == NULL) {
-    // TODO: return proper error.
-    return UNISIM_ERROR_WRONG_PARAM;
   }
 
   LOG(LOG_INFO, "Initializing UniverseSim");
@@ -37,7 +27,7 @@ UNISIM_API UNISIM_STATUS uns_System_Init(const char *logicPath, const char *dbPa
   return UNISIM_OK;
 }
 
-UNISIM_API void uns_System_Shutdown(void) {
+UNISIM_API UNISIM_STATUS uns_System_Shutdown(void) {
   LOG(LOG_INFO, "Destroying UniverseSim");
 
   // TODO: add proper cleaning of container, ie go over all simulations and lear them.
@@ -45,9 +35,11 @@ UNISIM_API void uns_System_Shutdown(void) {
   sim_Container_Destroy(&container);
 
   is_initialized = false;
+
+  return UNISIM_OK;
 }
 
-UNISIM_API unsId uns_Simulation_Create(void) {
+UNISIM_API UNISIM_STATUS uns_Simulation_Create(const char *logicPath, const char *dbPath, unsId *simulationId) {
   // TODO: check if system is initialized.
   // TODO: check if container has space for new simulation.
   // TODO: reallocate space for pointers to simulations + 1 and move them to the new place.
@@ -55,8 +47,20 @@ UNISIM_API unsId uns_Simulation_Create(void) {
   // I believe there is no need to preallocate additional space for simulations
   // as usually only one will be used anyway.
 
-  const unsId id = 0;
-  return id;
+  if (logicPath == NULL) {
+    // TODO: return proper error.
+    return UNISIM_ERROR_WRONG_PARAM;
+  }
+
+  if (dbPath == NULL) {
+    // TODO: return proper error.
+    return UNISIM_ERROR_WRONG_PARAM;
+  }
+
+  const int sim = 0;
+  *simulationId = sim;
+
+  return UNISIM_OK;
 }
 
 UNISIM_STATUS sim_Container_Create(sim_Container **container) {

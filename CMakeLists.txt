@@ -24,7 +24,13 @@ file(GLOB_RECURSE SOURCE_FILES src/*.c)
 file(GLOB_RECURSE PUBLIC_HEADER_FILES include/*.h)
 
 # Add shared library target
-add_library(${PROJECT_NAME} ${SOURCE_FILES})
+#add_library(${PROJECT_NAME} ${SOURCE_FILES})
+if (BUILD_SHARED_LIBS)
+    add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_SHARED_LIBS)
+else ()
+    add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
+endif ()
 
 # Include public headers in the target
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
