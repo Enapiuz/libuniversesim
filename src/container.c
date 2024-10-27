@@ -12,17 +12,17 @@ static sim_Container *container = NULL;
 
 UNISIM_API UNISIM_STATUS uns_System_Init(const char *logicPath, const char *dbPath) {
   if (is_initialized == true) {
-    return UNISIM_ERROR;
+    return UNISIM_ERROR_NOT_INITIALIZED;
   }
 
   if (logicPath == NULL) {
     // TODO: return proper error.
-    return UNISIM_ERROR;
+    return UNISIM_ERROR_WRONG_PARAM;
   }
 
   if (dbPath == NULL) {
     // TODO: return proper error.
-    return UNISIM_ERROR;
+    return UNISIM_ERROR_WRONG_PARAM;
   }
 
   LOG(LOG_INFO, "Initializing UniverseSim");
@@ -62,7 +62,7 @@ UNISIM_API unsId uns_Simulation_Create(void) {
 UNISIM_STATUS sim_Container_Create(sim_Container **container) {
   sim_Container *cnt = malloc(sizeof(sim_Container));
   if (cnt == NULL) {
-    return UNISIM_ERROR;
+    return UNISIM_ERROR_MEMORY_ALLOC;
   }
 
   cnt->simulationsCapacity = 0;
