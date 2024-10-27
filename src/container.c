@@ -3,14 +3,13 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "log.h"
 #include "universesim/universesim.h"
 
 static bool is_initialized = false;
 static sim_Container *container = NULL;
 
-UNISIM_API UNISIM_STATUS uns_System_Init(void) {
+UNISIM_STATUS uns_System_Init(void) {
   if (is_initialized == true) {
     return UNISIM_ERROR_NOT_INITIALIZED;
   }
@@ -27,7 +26,7 @@ UNISIM_API UNISIM_STATUS uns_System_Init(void) {
   return UNISIM_OK;
 }
 
-UNISIM_API UNISIM_STATUS uns_System_Shutdown(void) {
+UNISIM_STATUS uns_System_Shutdown(void) {
   LOG(LOG_INFO, "Destroying UniverseSim");
 
   // TODO: add proper cleaning of container, ie go over all simulations and lear them.
@@ -39,7 +38,7 @@ UNISIM_API UNISIM_STATUS uns_System_Shutdown(void) {
   return UNISIM_OK;
 }
 
-UNISIM_API UNISIM_STATUS uns_Simulation_Create(const char *logicPath, const char *dbPath, unsId *simulationId) {
+UNISIM_STATUS uns_Simulation_Create(const char *logicPath, const char *dbPath, unsId *simulationId) {
   // TODO: check if system is initialized.
   // TODO: check if container has space for new simulation.
   // TODO: reallocate space for pointers to simulations + 1 and move them to the new place.
