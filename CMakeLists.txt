@@ -4,6 +4,8 @@ project(libuniversesim
         LANGUAGES C
 )
 
+include(FetchContent)
+
 message(STATUS "Building ${PROJECT_NAME} version ${PROJECT_VERSION}")
 message(STATUS "CMake C compiler: ${CMAKE_C_COMPILER_ID}")
 message(STATUS "CMake system name: ${CMAKE_SYSTEM_NAME}")
@@ -14,6 +16,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+option(BUILD_TESTS "Build with unit tests" OFF)
 
 # Set C standard
 set(CMAKE_C_STANDARD 11)
@@ -51,3 +54,25 @@ install(TARGETS ${PROJECT_NAME}
 
 # Install headers
 install(DIRECTORY include/ DESTINATION include)
+
+if (BUILD_TESTS)
+    message("Building tests")
+    FetchContent_Declare(
+            unity
+            GIT_REPOSITORY https://github.com/ThrowTheSwitch/Unity.git
+            GIT_TAG v2.6.0
+    )
+    FetchContent_MakeAvailable(unity)
+
+    # Add test executable
+    file(GLOB TEST_FILES tests/*.c)
+    add_executable(run_tests ${TEST_FILES})
+    target_link_libraries(run_tests unity ${PROJECT_NAME})
+
+    # Add a custom target to run the tests
+    add_custom_target(tests
+            COMMAND run_tests
+            DEPENDS run_tests
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+endif ()

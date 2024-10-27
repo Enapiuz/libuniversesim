@@ -21,12 +21,12 @@ clean:
 .PHONY: build-shared
 build-shared:
 	mkdir -p $(BUILD_DIR)
-	cd $(BUILD_DIR) && cmake -G $(CMAKE_GENERATOR) -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) .. && cmake --build . --verbose
+	cd $(BUILD_DIR) && cmake -G $(CMAKE_GENERATOR) -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) .. && cmake --build . --verbose
 
 .PHONY: build-static
 build-static:
 	mkdir -p $(BUILD_DIR)
-	cd $(BUILD_DIR) && cmake -G $(CMAKE_GENERATOR) -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) .. && cmake --build . --verbose
+	cd $(BUILD_DIR) && cmake -G $(CMAKE_GENERATOR) -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) .. && cmake --build . --verbose
 
 .PHONY: format
 format:
@@ -34,8 +34,13 @@ format:
 
 .PHONY: watch
 watch:
-	rg --files --glob "*.c" --glob "*.h"  | entr make build-shared
+	rg --files --glob "*.c" --glob "*.h"  | entr make test
 
 .PHONY: debug
 debug: all
 	lldb ./$(BUILD_DIR)/$(EXECUTABLE)
+
+.PHONY: test
+test:
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR) && cmake -G $(CMAKE_GENERATOR) -DBUILD_TESTS=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE) .. && cmake --build . --verbose --target tests
