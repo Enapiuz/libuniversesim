@@ -3,18 +3,26 @@
 // clang-format off
 // 
 // Shared library macros
-#if defined( _MSC_VER ) && defined( libuniversesimEXPORTS )
-    // build the Windows DLL
-    #define UNISIM_EXPORT __declspec( dllexport )
-#elif defined( _MSC_VER ) && defined( LIBUNIVERSESIM_DLL )
-    // using the Windows DLL
-    #define UNISIM_EXPORT __declspec( dllimport )
-#elif defined( libuniversesim_EXPORTS )
-    // building or using shared library
-    #define UNISIM_EXPORT __attribute__( ( visibility( "default" ) ) )
+// Windows
+#if defined(_WIN32) || defined(_WIN64)
+    #ifdef BUILD_SHARED_LIBS
+        #if defined( libuniversesimEXPORTS )
+            // build the Windows DLL
+            #define UNISIM_EXPORT __declspec( dllexport )
+        #elif defined( LIBUNIVERSESIM_DLL )
+            // using the Windows DLL
+            #define UNISIM_EXPORT __declspec( dllimport )
+        #endif
+    #else
+        #define UNISIM_EXPORT
+    #endif
+// macOS & Linux
 #else
-    // static library
-    #define UNISIM_EXPORT
+    #ifdef BUILD_SHARED_LIBS
+        #define UNISIM_EXPORT __attribute__((visibility("default")))
+    #else
+        #define UNISIM_EXPORT
+    #endif
 #endif
 
 // C++ macros
