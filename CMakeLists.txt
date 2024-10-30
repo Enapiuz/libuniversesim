@@ -55,25 +55,23 @@ install(TARGETS ${PROJECT_NAME}
 # Install headers
 install(DIRECTORY include/ DESTINATION include)
 
-if (BUILD_TESTS)
-    message("Building tests")
-    FetchContent_Declare(
-            unity
-            GIT_REPOSITORY https://github.com/ThrowTheSwitch/Unity.git
-            GIT_TAG v2.6.0
-    )
-    set(UNITY_STATIC ON)
-    FetchContent_MakeAvailable(unity)
+message("Building tests")
+FetchContent_Declare(
+        unity
+        GIT_REPOSITORY https://github.com/ThrowTheSwitch/Unity.git
+        GIT_TAG v2.6.0
+)
+set(UNITY_STATIC ON)
+FetchContent_MakeAvailable(unity)
 
-    # Add test executable
-    file(GLOB TEST_FILES tests/*.c)
-    add_executable(run_tests ${TEST_FILES})
-    target_link_libraries(run_tests unity ${PROJECT_NAME})
+# Add test executable
+file(GLOB TEST_FILES tests/*.c)
+add_executable(run_tests ${TEST_FILES})
+target_link_libraries(run_tests unity ${PROJECT_NAME})
 
-    # Add a custom target to run the tests
-    add_custom_target(tests
-            COMMAND run_tests
-            DEPENDS run_tests
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    )
-endif ()
+# Add a custom target to run the tests
+add_custom_target(tests
+        COMMAND run_tests
+        DEPENDS run_tests
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)

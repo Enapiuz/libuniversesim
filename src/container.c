@@ -29,6 +29,10 @@ UNISIM_STATUS uns_System_Init(void) {
 UNISIM_STATUS uns_System_Shutdown(void) {
   LOG(LOG_INFO, "Destroying UniverseSim");
 
+  if (is_initialized == false) {
+    return UNISIM_ERROR_NOT_INITIALIZED;
+  }
+
   // TODO: add proper cleaning of container, ie go over all simulations and lear them.
 
   sim_Container_Destroy(&container);
