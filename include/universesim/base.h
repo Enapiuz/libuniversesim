@@ -4,15 +4,11 @@
 // 
 // Shared library macros
 // Windows
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
     #ifdef BUILD_SHARED_LIBS
-        #if defined( libuniversesimEXPORTS )
-            // build the Windows DLL
-            #define UNISIM_EXPORT __declspec( dllexport )
-        #elif defined( LIBUNIVERSESIM_DLL )
-            // using the Windows DLL
-            #define UNISIM_EXPORT __declspec( dllimport )
-        #endif
+        #define UNISIM_EXPORT __declspec(dllexport)
+    #elif defined(USING_SHARED_LIBS)
+        #define UNISIM_EXPORT __declspec(dllimport)
     #else
         #define UNISIM_EXPORT
     #endif
