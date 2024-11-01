@@ -4,14 +4,16 @@
 
 typedef enum {
   UNISIM_OK = 0,                    // No error.
-  UNISIM_ERROR = 1,                 // General error.
-  UNISIM_ERROR_NOT_INITIALIZED = 2, // Already initialized.
-  UNISIM_ERROR_WRONG_PARAM = 3,     // Wrong parameter (maybe pointer is NULL).
-  UNISIM_ERROR_MEMORY_ALLOC = 4,    // Memory allocation error.
+  UNISIM_ERROR,                     // General error.
+  UNISIM_ERROR_NOT_INITIALIZED,     // Not initialized.
+  UNISIM_ERROR_ALREADY_INITIALIZED, // Already initialized.
+  UNISIM_ERROR_WRONG_PARAM,         // Wrong parameter (maybe a pointer is NULL).
+  UNISIM_ERROR_MEMORY_ALLOC,        // Memory allocation error.
+  UNISIM_ERROR_NOT_IMPLEMENTED,     // Not implemented.
 } UNISIM_STATUS;
 
 /// Represents a universe.
 /// Container to all objects.
-typedef struct sig_Simulation {
+typedef struct uns_Simulation {
   int version;
-} sim_Simulation;
+} uns_Simulation;

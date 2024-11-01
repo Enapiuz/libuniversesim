@@ -7,16 +7,16 @@
 #include "universesim/universesim.h"
 
 static bool is_initialized = false;
-static sim_Container *container = NULL;
+static uns_Container *container = NULL;
 
 UNISIM_STATUS uns_System_Init(void) {
   if (is_initialized == true) {
-    return UNISIM_ERROR_NOT_INITIALIZED;
+    return UNISIM_ERROR_ALREADY_INITIALIZED;
   }
 
   LOG(LOG_INFO, "Initializing UniverseSim");
 
-  const UNISIM_STATUS res = sim_Container_Create(&container);
+  const UNISIM_STATUS res = uns_Container_Create();
   if (res != UNISIM_OK) {
     return res;
   }
@@ -35,7 +35,7 @@ UNISIM_STATUS uns_System_Shutdown(void) {
 
   // TODO: add proper cleaning of container, ie go over all simulations and lear them.
 
-  sim_Container_Destroy(&container);
+  uns_Container_Destroy();
 
   is_initialized = false;
 
@@ -66,8 +66,8 @@ UNISIM_STATUS uns_Simulation_Create(const char *logicPath, const char *dbPath, u
   return UNISIM_OK;
 }
 
-UNISIM_STATUS sim_Container_Create(sim_Container **container) {
-  sim_Container *cnt = malloc(sizeof(sim_Container));
+UNISIM_STATUS uns_Container_Create(void) {
+  uns_Container *cnt = malloc(sizeof(uns_Container));
   if (cnt == NULL) {
     return UNISIM_ERROR_MEMORY_ALLOC;
   }
@@ -75,14 +75,32 @@ UNISIM_STATUS sim_Container_Create(sim_Container **container) {
   cnt->simulationsCapacity = 0;
   cnt->simulationsCount = 0;
 
-  *container = cnt;
+  container = cnt;
 
   return UNISIM_OK;
 }
 
-UNISIM_STATUS sim_Container_Destroy(sim_Container **container) {
-  free(*container);
-  *container = NULL;
+UNISIM_STATUS uns_Container_Destroy(void) {
+  free(container);
+  container = NULL;
+
+  return UNISIM_OK;
+}
+
+UNISIM_STATUS uns_Container_Push(uns_Simulation *simulation) {
+  const size_t newCount = container->simulationsCount + 1;
+  uns_Simulation **newSimulations = malloc(sizeof(uns_Simulation *) * newCount);
+  if (container->simulationsCount > 0) {
+    for (size_t i = 0; i < container->simulationsCount; i++) {
+      newSimulations[i] = container->simulations[i];
+    }
+    free(container->simulations);
+  }
+
+  container->simulations = newSimulations;
+  container->simulations[container->simulationsCount] = simulation;
+  container->simulationsCapacity = newCount;
+  container->simulationsCount = newCount;
 
   return UNISIM_OK;
 }
