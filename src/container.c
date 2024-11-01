@@ -90,6 +90,10 @@ UNISIM_STATUS uns_Container_Destroy(void) {
 UNISIM_STATUS uns_Container_Push(uns_Simulation *simulation) {
   const size_t newCount = container->simulationsCount + 1;
   uns_Simulation **newSimulations = malloc(sizeof(uns_Simulation *) * newCount);
+  if (newSimulations == NULL) {
+    return UNISIM_ERROR_MEMORY_ALLOC;
+  }
+
   if (container->simulationsCount > 0) {
     for (size_t i = 0; i < container->simulationsCount; i++) {
       newSimulations[i] = container->simulations[i];
